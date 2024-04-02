@@ -1,5 +1,5 @@
-///! Input will listens to user input, modify the query string, send special
-///! keystrokes(such as Enter, Ctrl-p, Ctrl-n, etc) to the controller.
+//! Input will listens to user input, modify the query string, send special
+//! keystrokes(such as Enter, Ctrl-p, Ctrl-n, etc) to the controller.
 use crate::event::{parse_event, Event};
 use regex::Regex;
 use std::collections::HashMap;

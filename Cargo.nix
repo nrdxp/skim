@@ -1979,7 +1979,7 @@ rec {
       };
       "skim" = rec {
         crateName = "skim";
-        version = "0.10.4";
+        version = "0.11.0";
         edition = "2018";
         crateBin = [
           {

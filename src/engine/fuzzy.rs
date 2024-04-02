@@ -110,10 +110,10 @@ impl FuzzyEngine {
 			return None;
 		}
 
-		let mut buf = Vec::new();
-		let needle = nucleo::Utf32Str::new(pattern, &mut buf);
-		let mut buf = Vec::new();
-		let haystack = nucleo::Utf32Str::new(choice, &mut buf);
+		let mut n_buf = Vec::new();
+		let needle = nucleo::Utf32Str::new(pattern, &mut n_buf);
+		let mut h_buf = Vec::new();
+		let haystack = nucleo::Utf32Str::new(choice, &mut h_buf);
 
 		let mut indices: Vec<u32> = vec![];
 		let matcher = self.matcher.write().ok();

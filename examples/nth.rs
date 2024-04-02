@@ -6,17 +6,20 @@ use std::io::Cursor;
 /// In the example below, with `nth=2` set, only `123` could be matched.
 
 pub fn main() {
-    let input = "foo 123";
+	let input = "foo 123";
 
-    let options = SkimOptionsBuilder::default().query(Some("f")).build().unwrap();
-    let item_reader = SkimItemReader::new(SkimItemReaderOption::default().nth("2").build());
+	let options = SkimOptionsBuilder::default()
+		.query(Some("f"))
+		.build()
+		.unwrap();
+	let item_reader = SkimItemReader::new(SkimItemReaderOption::default().nth("2").build());
 
-    let items = item_reader.of_bufread(Cursor::new(input));
-    let selected_items = Skim::run_with(&options, Some(items))
-        .map(|out| out.selected_items)
-        .unwrap_or_else(Vec::new);
+	let items = item_reader.of_bufread(Cursor::new(input));
+	let selected_items = Skim::run_with(&options, Some(items))
+		.map(|out| out.selected_items)
+		.unwrap_or_else(Vec::new);
 
-    for item in selected_items.iter() {
-        println!("{}", item.output());
-    }
+	for item in selected_items.iter() {
+		println!("{}", item.output());
+	}
 }

@@ -135,18 +135,18 @@ const DEFAULT_HISTORY_SIZE: usize = 1000;
 
 //------------------------------------------------------------------------------
 fn main() {
-    env_logger::builder().format_timestamp_nanos().init();
+	env_logger::builder().format_timestamp_nanos().init();
 
-    match real_main() {
-        Ok(exit_code) => std::process::exit(exit_code),
-        Err(err) => {
-            // if downstream pipe is closed, exit silently, see PR#279
-            if err.kind() == std::io::ErrorKind::BrokenPipe {
-                std::process::exit(0)
-            }
-            std::process::exit(2)
-        }
-    }
+	match real_main() {
+		Ok(exit_code) => std::process::exit(exit_code),
+		Err(err) => {
+			// if downstream pipe is closed, exit silently, see PR#279
+			if err.kind() == std::io::ErrorKind::BrokenPipe {
+				std::process::exit(0)
+			}
+			std::process::exit(2)
+		}
+	}
 }
 
 #[rustfmt::skip]
@@ -386,173 +386,197 @@ fn real_main() -> Result<i32, std::io::Error> {
 }
 
 fn parse_options(options: &ArgMatches) -> SkimOptions<'_> {
-    SkimOptionsBuilder::default()
-        .color(options.values_of("color").and_then(|vals| vals.last()))
-        .min_height(options.values_of("min-height").and_then(|vals| vals.last()))
-        .no_height(options.is_present("no-height"))
-        .height(options.values_of("height").and_then(|vals| vals.last()))
-        .margin(options.values_of("margin").and_then(|vals| vals.last()))
-        .preview(options.values_of("preview").and_then(|vals| vals.last()))
-        .cmd(options.values_of("cmd").and_then(|vals| vals.last()))
-        .query(options.values_of("query").and_then(|vals| vals.last()))
-        .cmd_query(options.values_of("cmd-query").and_then(|vals| vals.last()))
-        .interactive(options.is_present("interactive"))
-        .prompt(options.values_of("prompt").and_then(|vals| vals.last()))
-        .cmd_prompt(options.values_of("cmd-prompt").and_then(|vals| vals.last()))
-        .bind(
-            options
-                .values_of("bind")
-                .map(|x| x.collect::<Vec<_>>())
-                .unwrap_or_default(),
-        )
-        .expect(options.values_of("expect").map(|x| x.collect::<Vec<_>>().join(",")))
-        .multi(if options.is_present("no-multi") {
-            false
-        } else {
-            options.is_present("multi")
-        })
-        .layout(options.values_of("layout").and_then(|vals| vals.last()).unwrap_or(""))
-        .reverse(options.is_present("reverse"))
-        .no_hscroll(options.is_present("no-hscroll"))
-        .no_mouse(options.is_present("no-mouse"))
-        .no_clear(options.is_present("no-clear"))
-        .no_clear_start(options.is_present("no-clear-start"))
-        .tabstop(options.values_of("tabstop").and_then(|vals| vals.last()))
-        .tiebreak(options.values_of("tiebreak").map(|x| x.collect::<Vec<_>>().join(",")))
-        .tac(options.is_present("tac"))
-        .nosort(options.is_present("no-sort"))
-        .exact(options.is_present("exact"))
-        .regex(options.is_present("regex"))
-        .delimiter(options.values_of("delimiter").and_then(|vals| vals.last()))
-        .inline_info(options.is_present("inline-info"))
-        .header(options.values_of("header").and_then(|vals| vals.last()))
-        .header_lines(
-            options
-                .values_of("header-lines")
-                .and_then(|vals| vals.last())
-                .map(|s| s.parse::<usize>().unwrap_or(0))
-                .unwrap_or(0),
-        )
-        .layout(options.values_of("layout").and_then(|vals| vals.last()).unwrap_or(""))
-        .algorithm(FuzzyAlgorithm::of(
-            options.values_of("algorithm").and_then(|vals| vals.last()).unwrap(),
-        ))
-        .case(match options.value_of("case") {
-            Some("smart") => CaseMatching::Smart,
-            Some("ignore") => CaseMatching::Ignore,
-            _ => CaseMatching::Respect,
-        })
-        .keep_right(options.is_present("keep-right"))
-        .skip_to_pattern(
-            options
-                .values_of("skip-to-pattern")
-                .and_then(|vals| vals.last())
-                .unwrap_or(""),
-        )
-        .select1(options.is_present("select-1"))
-        .exit0(options.is_present("exit-0"))
-        .sync(options.is_present("sync"))
-        .no_clear_if_empty(options.is_present("no-clear-if-empty"))
-        .build()
-        .unwrap()
+	SkimOptionsBuilder::default()
+		.color(options.values_of("color").and_then(|vals| vals.last()))
+		.min_height(options.values_of("min-height").and_then(|vals| vals.last()))
+		.no_height(options.is_present("no-height"))
+		.height(options.values_of("height").and_then(|vals| vals.last()))
+		.margin(options.values_of("margin").and_then(|vals| vals.last()))
+		.preview(options.values_of("preview").and_then(|vals| vals.last()))
+		.cmd(options.values_of("cmd").and_then(|vals| vals.last()))
+		.query(options.values_of("query").and_then(|vals| vals.last()))
+		.cmd_query(options.values_of("cmd-query").and_then(|vals| vals.last()))
+		.interactive(options.is_present("interactive"))
+		.prompt(options.values_of("prompt").and_then(|vals| vals.last()))
+		.cmd_prompt(options.values_of("cmd-prompt").and_then(|vals| vals.last()))
+		.bind(
+			options
+				.values_of("bind")
+				.map(|x| x.collect::<Vec<_>>())
+				.unwrap_or_default(),
+		)
+		.expect(
+			options
+				.values_of("expect")
+				.map(|x| x.collect::<Vec<_>>().join(",")),
+		)
+		.multi(if options.is_present("no-multi") {
+			false
+		} else {
+			options.is_present("multi")
+		})
+		.layout(
+			options
+				.values_of("layout")
+				.and_then(|vals| vals.last())
+				.unwrap_or(""),
+		)
+		.reverse(options.is_present("reverse"))
+		.no_hscroll(options.is_present("no-hscroll"))
+		.no_mouse(options.is_present("no-mouse"))
+		.no_clear(options.is_present("no-clear"))
+		.no_clear_start(options.is_present("no-clear-start"))
+		.tabstop(options.values_of("tabstop").and_then(|vals| vals.last()))
+		.tiebreak(
+			options
+				.values_of("tiebreak")
+				.map(|x| x.collect::<Vec<_>>().join(",")),
+		)
+		.tac(options.is_present("tac"))
+		.nosort(options.is_present("no-sort"))
+		.exact(options.is_present("exact"))
+		.regex(options.is_present("regex"))
+		.delimiter(options.values_of("delimiter").and_then(|vals| vals.last()))
+		.inline_info(options.is_present("inline-info"))
+		.header(options.values_of("header").and_then(|vals| vals.last()))
+		.header_lines(
+			options
+				.values_of("header-lines")
+				.and_then(|vals| vals.last())
+				.map(|s| s.parse::<usize>().unwrap_or(0))
+				.unwrap_or(0),
+		)
+		.layout(
+			options
+				.values_of("layout")
+				.and_then(|vals| vals.last())
+				.unwrap_or(""),
+		)
+		.algorithm(FuzzyAlgorithm::of(
+			options
+				.values_of("algorithm")
+				.and_then(|vals| vals.last())
+				.unwrap(),
+		))
+		.case(match options.value_of("case") {
+			Some("smart") => CaseMatching::Smart,
+			Some("ignore") => CaseMatching::Ignore,
+			_ => CaseMatching::Respect,
+		})
+		.keep_right(options.is_present("keep-right"))
+		.skip_to_pattern(
+			options
+				.values_of("skip-to-pattern")
+				.and_then(|vals| vals.last())
+				.unwrap_or(""),
+		)
+		.select1(options.is_present("select-1"))
+		.exit0(options.is_present("exit-0"))
+		.sync(options.is_present("sync"))
+		.no_clear_if_empty(options.is_present("no-clear-if-empty"))
+		.build()
+		.unwrap()
 }
 
 fn read_file_lines(filename: &str) -> Result<Vec<String>, std::io::Error> {
-    let file = File::open(filename)?;
-    let ret = BufReader::new(file).lines().collect();
-    debug!("file content: {:?}", ret);
-    ret
+	let file = File::open(filename)?;
+	let ret = BufReader::new(file).lines().collect();
+	debug!("file content: {:?}", ret);
+	ret
 }
 
 fn write_history_to_file(
-    orig_history: &[String],
-    latest: &str,
-    limit: usize,
-    filename: &str,
+	orig_history: &[String],
+	latest: &str,
+	limit: usize,
+	filename: &str,
 ) -> Result<(), std::io::Error> {
-    if orig_history.last().map(|l| l.as_str()) == Some(latest) {
-        // no point of having at the end of the history 5x the same command...
-        return Ok(());
-    }
-    let additional_lines = if latest.trim().is_empty() { 0 } else { 1 };
-    let start_index = if orig_history.len() + additional_lines > limit {
-        orig_history.len() + additional_lines - limit
-    } else {
-        0
-    };
+	if orig_history.last().map(|l| l.as_str()) == Some(latest) {
+		// no point of having at the end of the history 5x the same command...
+		return Ok(());
+	}
+	let additional_lines = if latest.trim().is_empty() { 0 } else { 1 };
+	let start_index = if orig_history.len() + additional_lines > limit {
+		orig_history.len() + additional_lines - limit
+	} else {
+		0
+	};
 
-    let mut history = orig_history[start_index..].to_vec();
-    history.push(latest.to_string());
+	let mut history = orig_history[start_index..].to_vec();
+	history.push(latest.to_string());
 
-    let file = File::create(filename)?;
-    let mut file = BufWriter::new(file);
-    file.write_all(history.join("\n").as_bytes())?;
-    Ok(())
+	let file = File::create(filename)?;
+	let mut file = BufWriter::new(file);
+	file.write_all(history.join("\n").as_bytes())?;
+	Ok(())
 }
 
 #[derive(Builder)]
 pub struct BinOptions<'a> {
-    filter: Option<&'a str>,
-    output_ending: &'a str,
-    print_query: bool,
-    print_cmd: bool,
+	filter: Option<&'a str>,
+	output_ending: &'a str,
+	print_query: bool,
+	print_cmd: bool,
 }
 
 pub fn filter(
-    bin_option: &BinOptions,
-    options: &SkimOptions,
-    source: Option<SkimItemReceiver>,
+	bin_option: &BinOptions,
+	options: &SkimOptions,
+	source: Option<SkimItemReceiver>,
 ) -> Result<i32, std::io::Error> {
-    let mut stdout = std::io::stdout();
+	let mut stdout = std::io::stdout();
 
-    let default_command = match env::var("SKIM_DEFAULT_COMMAND").as_ref().map(String::as_ref) {
-        Ok("") | Err(_) => "find .".to_owned(),
-        Ok(val) => val.to_owned(),
-    };
-    let query = bin_option.filter.unwrap_or("");
-    let cmd = options.cmd.unwrap_or(&default_command);
+	let default_command = match env::var("SKIM_DEFAULT_COMMAND")
+		.as_ref()
+		.map(String::as_ref)
+	{
+		Ok("") | Err(_) => "find .".to_owned(),
+		Ok(val) => val.to_owned(),
+	};
+	let query = bin_option.filter.unwrap_or("");
+	let cmd = options.cmd.unwrap_or(&default_command);
 
-    // output query
-    if bin_option.print_query {
-        write!(stdout, "{}{}", query, bin_option.output_ending)?;
-    }
+	// output query
+	if bin_option.print_query {
+		write!(stdout, "{}{}", query, bin_option.output_ending)?;
+	}
 
-    if bin_option.print_cmd {
-        write!(stdout, "{}{}", cmd, bin_option.output_ending)?;
-    }
+	if bin_option.print_cmd {
+		write!(stdout, "{}{}", cmd, bin_option.output_ending)?;
+	}
 
-    //------------------------------------------------------------------------------
-    // matcher
-    let engine_factory: Box<dyn MatchEngineFactory> = if options.regex {
-        Box::new(RegexEngineFactory::builder())
-    } else {
-        let fuzzy_engine_factory = ExactOrFuzzyEngineFactory::builder()
-            .fuzzy_algorithm(options.algorithm)
-            .exact_mode(options.exact)
-            .build();
-        Box::new(AndOrEngineFactory::new(fuzzy_engine_factory))
-    };
+	//------------------------------------------------------------------------------
+	// matcher
+	let engine_factory: Box<dyn MatchEngineFactory> = if options.regex {
+		Box::new(RegexEngineFactory::builder())
+	} else {
+		let fuzzy_engine_factory = ExactOrFuzzyEngineFactory::builder()
+			.fuzzy_algorithm(options.algorithm)
+			.exact_mode(options.exact)
+			.build();
+		Box::new(AndOrEngineFactory::new(fuzzy_engine_factory))
+	};
 
-    let engine = engine_factory.create_engine_with_case(query, options.case);
+	let engine = engine_factory.create_engine_with_case(query, options.case);
 
-    //------------------------------------------------------------------------------
-    // start
-    let components_to_stop = Arc::new(AtomicUsize::new(0));
+	//------------------------------------------------------------------------------
+	// start
+	let components_to_stop = Arc::new(AtomicUsize::new(0));
 
-    let stream_of_item = source.unwrap_or_else(|| {
-        let cmd_collector = options.cmd_collector.clone();
-        let (ret, _control) = cmd_collector.borrow_mut().invoke(cmd, components_to_stop);
-        ret
-    });
+	let stream_of_item = source.unwrap_or_else(|| {
+		let cmd_collector = options.cmd_collector.clone();
+		let (ret, _control) = cmd_collector.borrow_mut().invoke(cmd, components_to_stop);
+		ret
+	});
 
-    let mut num_matched = 0;
-    stream_of_item
-        .into_iter()
-        .filter_map(|item| engine.match_item(item.clone()).map(|result| (item, result)))
-        .try_for_each(|(item, _match_result)| {
-            num_matched += 1;
-            write!(stdout, "{}{}", item.output(), bin_option.output_ending)
-        })?;
+	let mut num_matched = 0;
+	stream_of_item
+		.into_iter()
+		.filter_map(|item| engine.match_item(item.clone()).map(|result| (item, result)))
+		.try_for_each(|(item, _match_result)| {
+			num_matched += 1;
+			write!(stdout, "{}{}", item.output(), bin_option.output_ending)
+		})?;
 
-    Ok(if num_matched == 0 { 1 } else { 0 })
+	Ok(if num_matched == 0 { 1 } else { 0 })
 }

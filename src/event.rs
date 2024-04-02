@@ -9,85 +9,88 @@ pub type EventSender = Sender<(Key, Event)>;
 
 #[derive(Debug, Clone, Hash, PartialEq, Eq)]
 pub enum Event {
-    EvInputKey(Key),
-    EvInputInvalid,
-    EvHeartBeat,
+	EvInputKey(Key),
+	EvInputInvalid,
+	EvHeartBeat,
 
-    // user bind actions
-    EvActAbort,
-    EvActAccept(Option<String>),
-    EvActAddChar(char),
-    EvActAppendAndSelect,
-    EvActBackwardChar,
-    EvActBackwardDeleteChar,
-    EvActBackwardKillWord,
-    EvActBackwardWord,
-    EvActBeginningOfLine,
-    EvActCancel,
-    EvActClearScreen,
-    EvActDeleteChar,
-    EvActDeleteCharEOF,
-    EvActDeselectAll,
-    EvActDown(i32),
-    EvActEndOfLine,
-    EvActExecute(String),
-    EvActExecuteSilent(String),
-    EvActForwardChar,
-    EvActForwardWord,
-    EvActIfQueryEmpty(String),
-    EvActIfQueryNotEmpty(String),
-    EvActIfNonMatched(String),
-    EvActIgnore,
-    EvActKillLine,
-    EvActKillWord,
-    EvActNextHistory,
-    EvActHalfPageDown(i32),
-    EvActHalfPageUp(i32),
-    EvActPageDown(i32),
-    EvActPageUp(i32),
-    EvActPreviewUp(i32),
-    EvActPreviewDown(i32),
-    EvActPreviewLeft(i32),
-    EvActPreviewRight(i32),
-    EvActPreviewPageUp(i32),
-    EvActPreviewPageDown(i32),
-    EvActPreviousHistory,
-    EvActRedraw,
-    EvActRefreshCmd,
-    EvActRefreshPreview,
-    EvActRotateMode,
-    EvActScrollLeft(i32),
-    EvActScrollRight(i32),
-    EvActSelectAll,
-    EvActSelectRow(usize),
-    EvActToggle,
-    EvActToggleAll,
-    EvActToggleIn,
-    EvActToggleInteractive,
-    EvActToggleOut,
-    EvActTogglePreview,
-    EvActTogglePreviewWrap,
-    EvActToggleSort,
-    EvActUnixLineDiscard,
-    EvActUnixWordRubout,
-    EvActUp(i32),
-    EvActYank,
+	// user bind actions
+	EvActAbort,
+	EvActAccept(Option<String>),
+	EvActAddChar(char),
+	EvActAppendAndSelect,
+	EvActBackwardChar,
+	EvActBackwardDeleteChar,
+	EvActBackwardKillWord,
+	EvActBackwardWord,
+	EvActBeginningOfLine,
+	EvActCancel,
+	EvActClearScreen,
+	EvActDeleteChar,
+	EvActDeleteCharEOF,
+	EvActDeselectAll,
+	EvActDown(i32),
+	EvActEndOfLine,
+	EvActExecute(String),
+	EvActExecuteSilent(String),
+	EvActForwardChar,
+	EvActForwardWord,
+	EvActIfQueryEmpty(String),
+	EvActIfQueryNotEmpty(String),
+	EvActIfNonMatched(String),
+	EvActIgnore,
+	EvActKillLine,
+	EvActKillWord,
+	EvActNextHistory,
+	EvActHalfPageDown(i32),
+	EvActHalfPageUp(i32),
+	EvActPageDown(i32),
+	EvActPageUp(i32),
+	EvActPreviewUp(i32),
+	EvActPreviewDown(i32),
+	EvActPreviewLeft(i32),
+	EvActPreviewRight(i32),
+	EvActPreviewPageUp(i32),
+	EvActPreviewPageDown(i32),
+	EvActPreviousHistory,
+	EvActRedraw,
+	EvActRefreshCmd,
+	EvActRefreshPreview,
+	EvActRotateMode,
+	EvActScrollLeft(i32),
+	EvActScrollRight(i32),
+	EvActSelectAll,
+	EvActSelectRow(usize),
+	EvActToggle,
+	EvActToggleAll,
+	EvActToggleIn,
+	EvActToggleInteractive,
+	EvActToggleOut,
+	EvActTogglePreview,
+	EvActTogglePreviewWrap,
+	EvActToggleSort,
+	EvActUnixLineDiscard,
+	EvActUnixWordRubout,
+	EvActUp(i32),
+	EvActYank,
 
-    #[doc(hidden)]
-    __Nonexhaustive,
+	#[doc(hidden)]
+	__Nonexhaustive,
 }
 
 bitflags! {
-    /// `Effect` is the effect of a text
-    pub struct UpdateScreen: u8 {
-        const REDRAW = 0b0000_0000;
-        const DONT_REDRAW = 0b0000_0010;
-    }
+	/// `Effect` is the effect of a text
+	pub struct UpdateScreen: u8 {
+		const REDRAW = 0b0000_0000;
+		const DONT_REDRAW = 0b0000_0010;
+	}
 }
 
 pub trait EventHandler {
-    /// handle event, return whether
-    fn handle(&mut self, event: &Event) -> UpdateScreen;
+	/// handle event, return whether
+	fn handle(
+		&mut self,
+		event: &Event,
+	) -> UpdateScreen;
 }
 
 #[rustfmt::skip]

@@ -1,4 +1,4 @@
-max_width = 80
+max_width = 100
 hard_tabs = true
 tab_spaces = 4
 newline_style = "Unix"
@@ -6,7 +6,7 @@ use_small_heuristics = "Default"
 fn_call_width = 60
 attr_fn_like_width = 70
 struct_lit_width = 18
-struct_variant_width = 35
+struct_variant_width = 45
 array_width = 60
 chain_width = 60
 single_line_if_else_max_width = 50

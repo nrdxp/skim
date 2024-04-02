@@ -683,7 +683,6 @@ class TestSkim(TestBase):
     def test_reserved_options(self):
         options = [
             '--extended',
-            '--algo=TYPE',
             '--literal',
             '--no-mouse',
             '--cycle',

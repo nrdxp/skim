@@ -60,7 +60,6 @@ _skim_opts_completion() {
   opts="
     -x --extended
     -e --exact
-    --algo
     -i +i
     -n --nth
     --with-nth

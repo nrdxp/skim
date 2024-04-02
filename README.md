@@ -441,7 +441,7 @@ different from fzf. For example:
 1. `skim` is a binary as well as a library while fzf is only a binary.
 2. `skim` has an interactive mode.
 3. `skim` supports pre-selection
-4. The fuzzy search algorithm is different.
+4. The fuzzy search algorithm is different (using [nucleo][nucleo]).
 5. ~~UI of showing matched items. `fzf` will show only the range matched while
    `skim` will show each character matched.~~ (fzf has this now)
 6. ~~`skim`'s range syntax is Git style~~: now it is the same with fzf.
@@ -474,3 +474,5 @@ For example, with termux, you can add in your bashr:
 ```
 export TERMINFO=/data/data/com.termux/files/usr/share/terminfo
 ```
+
+[nucleo]: https://github.com/helix-editor/nucleo

@@ -31,7 +31,7 @@ use crate::util::clear_canvas;
 use crate::util::{
 	depends_on_items, inject_command, margin_string_to_size, parse_margin, InjectContext,
 };
-use crate::{FuzzyAlgorithm, MatchEngineFactory, MatchRange, SkimItem};
+use crate::{MatchEngineFactory, MatchRange, SkimItem};
 use std::cmp::max;
 
 const REFRESH_DURATION: i64 = 100;
@@ -69,7 +69,6 @@ pub struct Model {
 	rx: EventReceiver,
 	tx: EventSender,
 
-	fuzzy_algorithm: FuzzyAlgorithm,
 	reader_timer: Instant,
 	matcher_timer: Instant,
 	reader_control: Option<ReaderControl>,
@@ -191,7 +190,6 @@ impl Model {
 			matcher_timer: Instant::now(),
 			reader_control: None,
 			matcher_control: None,
-			fuzzy_algorithm: FuzzyAlgorithm::default(),
 
 			header,
 			preview_hidden: true,
@@ -236,8 +234,6 @@ impl Model {
 		if options.regex {
 			self.use_regex = true;
 		}
-
-		self.fuzzy_algorithm = options.algorithm;
 
 		// preview related
 		let (preview_direction, preview_size, preview_wrap, preview_shown) = options

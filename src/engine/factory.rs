@@ -1,7 +1,7 @@
 use crate::engine::all::MatchAllEngine;
 use crate::engine::andor::{AndEngine, OrEngine};
 use crate::engine::exact::{ExactEngine, ExactMatchingParam};
-use crate::engine::fuzzy::{FuzzyAlgorithm, FuzzyEngine};
+use crate::engine::fuzzy::FuzzyEngine;
 use crate::engine::regexp::RegexEngine;
 use crate::item::RankBuilder;
 use crate::{CaseMatching, MatchEngine, MatchEngineFactory};
@@ -16,7 +16,6 @@ lazy_static! {
 // Exact engine factory
 pub struct ExactOrFuzzyEngineFactory {
 	exact_mode: bool,
-	fuzzy_algorithm: FuzzyAlgorithm,
 	rank_builder: Arc<RankBuilder>,
 }
 
@@ -24,7 +23,6 @@ impl ExactOrFuzzyEngineFactory {
 	pub fn builder() -> Self {
 		Self {
 			exact_mode: false,
-			fuzzy_algorithm: FuzzyAlgorithm::SkimV2,
 			rank_builder: Default::default(),
 		}
 	}
@@ -34,14 +32,6 @@ impl ExactOrFuzzyEngineFactory {
 		exact_mode: bool,
 	) -> Self {
 		self.exact_mode = exact_mode;
-		self
-	}
-
-	pub fn fuzzy_algorithm(
-		mut self,
-		fuzzy_algorithm: FuzzyAlgorithm,
-	) -> Self {
-		self.fuzzy_algorithm = fuzzy_algorithm;
 		self
 	}
 
@@ -82,7 +72,6 @@ impl MatchEngineFactory for ExactOrFuzzyEngineFactory {
 				return Box::new(
 					FuzzyEngine::builder()
 						.query(&query[1..])
-						.algorithm(self.fuzzy_algorithm)
 						.case(case)
 						.rank_builder(self.rank_builder.clone())
 						.build(),
@@ -134,7 +123,6 @@ impl MatchEngineFactory for ExactOrFuzzyEngineFactory {
 			Box::new(
 				FuzzyEngine::builder()
 					.query(query)
-					.algorithm(self.fuzzy_algorithm)
 					.case(case)
 					.rank_builder(self.rank_builder.clone())
 					.build(),

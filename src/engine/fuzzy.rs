@@ -11,32 +11,11 @@ use std::convert::TryFrom;
 use std::sync::RwLock;
 
 //------------------------------------------------------------------------------
-#[derive(Debug, Copy, Clone, Default)]
-pub enum FuzzyAlgorithm {
-	SkimV1,
-	#[default]
-	SkimV2,
-	Clangd,
-}
-
-impl FuzzyAlgorithm {
-	pub fn of(algorithm: &str) -> Self {
-		match algorithm.to_ascii_lowercase().as_ref() {
-			"skim_v1" => FuzzyAlgorithm::SkimV1,
-			"skim_v2" | "skim" => FuzzyAlgorithm::SkimV2,
-			"clangd" => FuzzyAlgorithm::Clangd,
-			_ => FuzzyAlgorithm::SkimV2,
-		}
-	}
-}
-
-//------------------------------------------------------------------------------
 // Fuzzy engine
 #[derive(Default)]
 pub struct FuzzyEngineBuilder {
 	query: String,
 	case: CaseMatching,
-	algorithm: FuzzyAlgorithm,
 	rank_builder: Arc<RankBuilder>,
 }
 
@@ -54,14 +33,6 @@ impl FuzzyEngineBuilder {
 		case: CaseMatching,
 	) -> Self {
 		self.case = case;
-		self
-	}
-
-	pub fn algorithm(
-		mut self,
-		algorithm: FuzzyAlgorithm,
-	) -> Self {
-		self.algorithm = algorithm;
 		self
 	}
 

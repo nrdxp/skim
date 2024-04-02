@@ -14,7 +14,6 @@ use crossbeam::channel::{Receiver, Sender};
 use tuikit::prelude::{Event as TermEvent, *};
 
 pub use crate::ansi::AnsiString;
-pub use crate::engine::fuzzy::FuzzyAlgorithm;
 use crate::event::{EventReceiver, EventSender};
 use crate::model::Model;
 pub use crate::options::SkimOptions;

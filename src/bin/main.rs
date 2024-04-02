@@ -33,8 +33,6 @@ Usage: sk [options]
     -d, --delimiter \\t  specify the delimiter(in REGEX) for fields
     -e, --exact          start skim in exact mode
     --regex              use regex instead of fuzzy match
-    --algo=TYPE          Fuzzy matching algorithm:
-                         [skim_v1|skim_v2|clangd] (default: skim_v2)
     --case [respect,ignore,smart] (default: smart)
                          case sensitive or not
 
@@ -202,7 +200,6 @@ fn real_main() -> Result<i32, std::io::Error> {
         .arg(Arg::with_name("preview-window").long("preview-window").multiple(true).takes_value(true).default_value("right:50%"))
         .arg(Arg::with_name("reverse").long("reverse").multiple(true).takes_value(true))
 
-        .arg(Arg::with_name("algorithm").long("algo").multiple(true).takes_value(true).default_value("skim_v2"))
         .arg(Arg::with_name("case").long("case").multiple(true).takes_value(true).default_value("smart"))
         .arg(Arg::with_name("literal").long("literal").multiple(true).takes_value(true))
         .arg(Arg::with_name("cycle").long("cycle").multiple(true).takes_value(true))
@@ -452,12 +449,6 @@ fn parse_options(options: &ArgMatches) -> SkimOptions<'_> {
 				.and_then(|vals| vals.last())
 				.unwrap_or(""),
 		)
-		.algorithm(FuzzyAlgorithm::of(
-			options
-				.values_of("algorithm")
-				.and_then(|vals| vals.last())
-				.unwrap(),
-		))
 		.case(match options.value_of("case") {
 			Some("smart") => CaseMatching::Smart,
 			Some("ignore") => CaseMatching::Ignore,
@@ -551,7 +542,6 @@ pub fn filter(
 		Box::new(RegexEngineFactory::builder())
 	} else {
 		let fuzzy_engine_factory = ExactOrFuzzyEngineFactory::builder()
-			.fuzzy_algorithm(options.algorithm)
 			.exact_mode(options.exact)
 			.build();
 		Box::new(AndOrEngineFactory::new(fuzzy_engine_factory))

@@ -4,7 +4,7 @@ use derive_builder::Builder;
 
 use crate::helper::item_reader::SkimItemReader;
 use crate::reader::CommandCollector;
-use crate::{CaseMatching, FuzzyAlgorithm, MatchEngineFactory, Selector};
+use crate::{CaseMatching, MatchEngineFactory, Selector};
 use std::cell::RefCell;
 
 #[derive(Builder)]
@@ -44,7 +44,6 @@ pub struct SkimOptions<'a> {
 	pub header: Option<&'a str>,
 	pub header_lines: usize,
 	pub layout: &'a str,
-	pub algorithm: FuzzyAlgorithm,
 	pub case: CaseMatching,
 	pub engine_factory: Option<Rc<dyn MatchEngineFactory>>,
 	pub query_history: &'a [String],
@@ -95,7 +94,6 @@ impl<'a> Default for SkimOptions<'a> {
 			header: None,
 			header_lines: 0,
 			layout: "",
-			algorithm: FuzzyAlgorithm::default(),
 			case: CaseMatching::default(),
 			engine_factory: None,
 			query_history: &[],

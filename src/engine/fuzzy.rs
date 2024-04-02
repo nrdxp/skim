@@ -46,7 +46,13 @@ impl FuzzyEngineBuilder {
 
 	#[allow(deprecated)]
 	pub fn build(self) -> FuzzyEngine {
-		let matcher: RwLock<Matcher> = RwLock::new(Matcher::default());
+		let matcher: RwLock<Matcher> = RwLock::new({
+			let mut matcher = Matcher::default();
+			if self.case == CaseMatching::Respect {
+				matcher.config.ignore_case = false;
+			}
+			matcher
+		});
 
 		FuzzyEngine {
 			matcher,
@@ -83,13 +89,12 @@ impl FuzzyEngine {
 		let mut h_buf = Vec::new();
 		let haystack = nucleo::Utf32Str::new(choice, &mut h_buf);
 
-		let mut indices: Vec<u32> = vec![];
-		let matcher = self.matcher.write().ok();
-		if let Some(mut m) = matcher {
-			if let Some(u) = m.fuzzy_indices(haystack, needle, &mut indices) {
+		if let Ok(mut matcher) = self.matcher.write() {
+			let mut indices: Vec<u32> = Vec::with_capacity(haystack.len());
+			if let Some(i) = matcher.fuzzy_indices(haystack, needle, &mut indices) {
 				let res: Result<Vec<usize>, _> =
 					indices.into_iter().map(TryFrom::try_from).collect();
-				res.ok().map(|r| (u as i64, r))
+				res.ok().map(|r| (i as i64, r))
 			} else {
 				None
 			}

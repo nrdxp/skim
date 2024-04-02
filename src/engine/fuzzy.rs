@@ -11,12 +11,11 @@ use std::convert::TryFrom;
 use std::sync::RwLock;
 
 //------------------------------------------------------------------------------
-#[derive(Debug, Copy, Clone)]
-#[derive(Default)]
+#[derive(Debug, Copy, Clone, Default)]
 pub enum FuzzyAlgorithm {
 	SkimV1,
 	#[default]
- SkimV2,
+	SkimV2,
 	Clangd,
 }
 
@@ -30,8 +29,6 @@ impl FuzzyAlgorithm {
 		}
 	}
 }
-
-
 
 //------------------------------------------------------------------------------
 // Fuzzy engine

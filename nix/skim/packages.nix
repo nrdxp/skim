@@ -20,6 +20,7 @@ in {
     .build
     .overrideAttrs (_: {
       postInstall = ''
+        cp bin/sk-tmux $out/bin
         mkdir -p $out/share
         cp -r man $out/share
         cp -r shell $out/share/skim

@@ -149,7 +149,7 @@ impl Previewer {
 			(None, None) => false,
 			(None, Some(_)) => true,
 			(Some(_), None) => true,
-			#[allow(clippy::vtable_address_comparisons)]
+			#[allow(ambiguous_wide_pointer_comparisons)]
 			(Some(prev), Some(new)) => !Arc::ptr_eq(prev, new),
 		};
 
@@ -528,7 +528,7 @@ fn run<C>(
 					.env("LINES", preview_cmd.lines.to_string())
 					.env("COLUMNS", preview_cmd.columns.to_string())
 					.arg("-c")
-					.arg(&cmd)
+					.arg(cmd)
 					.stdout(Stdio::piped())
 					.stderr(Stdio::piped())
 					.spawn();
